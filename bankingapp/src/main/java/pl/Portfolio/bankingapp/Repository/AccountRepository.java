@@ -18,7 +18,7 @@ public class AccountRepository implements AccountDao {
     @Override
     public List<Account> getAll()
     {
-        return jdbcTemplate.query("SELECT id, account_number, account_type, balance, user_id FROM banking_db.accounts",
+        return jdbcTemplate.query("SELECT * FROM banking_db.accounts",
                 BeanPropertyRowMapper.newInstance(Account.class));
     }
 

@@ -11,13 +11,9 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private String full_name;
-    private String role;
+    private String first_name;
+    private String last_name;
 
-    public User(String username, String password, String full_name, String role) {
-        this.username = username;
-        this.password = password;
-        this.full_name = full_name;
-        this.role = role;
-    }
+    private String email;
+    private String role;
 }

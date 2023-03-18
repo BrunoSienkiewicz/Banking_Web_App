@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDto {
+    private int id;
     private String account_number;
     private String account_type;
     private int balance;
-    private int user_id;
-
+    private String owner_username;
 }

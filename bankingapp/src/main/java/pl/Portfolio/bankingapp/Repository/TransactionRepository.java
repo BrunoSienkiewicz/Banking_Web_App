@@ -18,7 +18,7 @@ public class TransactionRepository implements TransactionDao {
     @Override
     public List<Transaction> getAll()
     {
-        return jdbcTemplate.query("SELECT id, transaction_type, amount, account_id FROM banking_db.transactions",
+        return jdbcTemplate.query("SELECT * FROM banking_db.transactions",
                 BeanPropertyRowMapper.newInstance(Transaction.class));
     }
 

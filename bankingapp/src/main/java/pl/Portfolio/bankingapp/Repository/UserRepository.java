@@ -17,7 +17,7 @@ public class UserRepository implements UserDao {
 
     public List<User> getAll()
     {
-        return jdbcTemplate.query("SELECT id, username, password, full_name, role FROM banking_db.users",
+        return jdbcTemplate.query("SELECT * FROM banking_db.users",
                 BeanPropertyRowMapper.newInstance(User.class));
     }
 
@@ -30,15 +30,15 @@ public class UserRepository implements UserDao {
     public int save(List<User> users)
     {
         users.forEach(user -> jdbcTemplate
-                .update("INSERT INTO banking_db.users(username, password, full_name, role) VALUES (?, ?, ?, ?)",
-                        user.getUsername(), user.getPassword(), user.getFull_name(), user.getRole()));
+                .update("INSERT INTO banking_db.users(username, password, first_name, last_name, email, role) VALUES(?, ?, ?, ?, ?, ?)",
+                        user.getUsername(), user.getPassword(), user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getRole()));
         return 1;
     }
 
     public int update(User user)
     {
-        return jdbcTemplate.update("UPDATE banking_db.users SET username=?, password=?, full_name=?, role=? WHERE id=?",
-                user.getUsername(), user.getPassword(), user.getFull_name(), user.getRole());
+        return jdbcTemplate.update("UPDATE banking_db.users SET username=?, password=?, first_name=?, last_name=?, email=?, role=? WHERE id=?",
+                user.getUsername(), user.getPassword(), user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getRole(), user.getId());
     }
 
     public int delete(int id)
@@ -49,5 +49,10 @@ public class UserRepository implements UserDao {
     public User getByUsername(String username) {
         return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE username = ? ",
                 BeanPropertyRowMapper.newInstance(User.class), username);
+    }
+
+    public User getByEmail(String email) {
+        return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE email = ? ",
+                BeanPropertyRowMapper.newInstance(User.class), email);
     }
 }

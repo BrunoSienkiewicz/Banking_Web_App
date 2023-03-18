@@ -2,88 +2,63 @@ package pl.Portfolio.bankingapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.Portfolio.bankingapp.Repository.UserRepository;
-import pl.Portfolio.bankingapp.Model.User;
+import pl.Portfolio.bankingapp.DTO.UserDto;
+import pl.Portfolio.bankingapp.Services.UserService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @GetMapping("/getall")
-    public List<User> getAll()
+    public List<UserDto> getAll()
     {
-        return userRepository.getAll();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/get/{id}")
-    public User getById(@PathVariable("id") int id)
+    public UserDto getById(@PathVariable("id") int id)
     {
-        return userRepository.getById(id);
+        return userService.getUserById(id);
     }
 
     @GetMapping("/get/{username}")
-    public User getByUsername(@PathVariable("username") String username)
+    public UserDto getByUsername(@PathVariable("username") String username)
     {
-        return userRepository.getByUsername(username);
+        return userService.getUserByUsername(username);
+    }
+
+    @GetMapping("/get/{email}")
+    public UserDto getByEmail(@PathVariable("email") String email)
+    {
+        return userService.getUserByEmail(email);
     }
 
     @PostMapping("/add")
-    public int add(@RequestBody List<User> users)
+    public int add(@RequestBody List<UserDto> users)
     {
-        return userRepository.save(users);
+        return userService.saveUsers(users);
     }
 
     @PutMapping("/update/{id}")
-    public int update(@PathVariable("id") int id, @RequestBody User updatedUser)
+    public int update(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
     {
-        User user = userRepository.getById(id);
-
-        if (user != null)
-        {
-            user.setUsername(updatedUser.getUsername());
-            user.setPassword(updatedUser.getPassword());
-            user.setRole(updatedUser.getRole());
-
-            userRepository.update(user);
-
-            return 1;
-        }else
-        {
-            return -1;
-        }
+        return userService.updateUser(id, updatedUser);
     }
 
     @PatchMapping("/partiallyupdate/{id}")
-    public int patch(@PathVariable("id") int id, @RequestBody User updatedUser)
+    public int patch(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
     {
-        User user = userRepository.getById(id);
+        return userService.partialUpdateUser(id, updatedUser);
+    }
 
-        if (user != null)
-        {
-            if (updatedUser.getUsername() != null)
-            {
-                user.setUsername(updatedUser.getUsername());
-            }
-            if (updatedUser.getPassword() != null)
-            {
-                user.setPassword(updatedUser.getPassword());
-            }
-            if (updatedUser.getRole() != null)
-            {
-                user.setRole(updatedUser.getRole());
-            }
-
-            userRepository.update(user);
-
-            return 1;
-        }else
-        {
-            return -1;
-        }
+    @DeleteMapping("/delete/{id}")
+    public int delete(@PathVariable("id") int id)
+    {
+        return userService.deleteUser(id);
     }
 }
