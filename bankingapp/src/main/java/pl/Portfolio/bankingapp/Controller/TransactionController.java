@@ -1,14 +1,21 @@
 package pl.Portfolio.bankingapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.Portfolio.bankingapp.DTO.TransactionDto;
-import pl.Portfolio.bankingapp.Model.Transaction;
+import pl.Portfolio.bankingapp.DTO.TransferDto;
+import pl.Portfolio.bankingapp.Exceptions.AccountNotFoundException;
+import pl.Portfolio.bankingapp.Exceptions.InsufficientFundsException;
+import pl.Portfolio.bankingapp.Exceptions.TransactionNotFoundException;
+import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
 import pl.Portfolio.bankingapp.Services.TransactionService;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/transactions")
 public class TransactionController {
 
@@ -16,45 +23,84 @@ public class TransactionController {
     TransactionService transactionService;
 
     @GetMapping("/getall")
-    public List<TransactionDto> getAll()
+    public ResponseEntity getAll()
     {
-        return transactionService.getAllTransactions();
+        return ResponseEntity.ok(transactionService.getAllTransactions());
     }
 
     @GetMapping("/{id}")
-    public TransactionDto getById(@PathVariable("id") int id)
+    public ResponseEntity getById(@PathVariable("id") int id)
     {
-        return transactionService.getTransactionById(id);
+        try {
+            return ResponseEntity.ok(transactionService.getTransactionById(id));
+        } catch (TransactionNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @GetMapping("/getbyaccountid/{id}")
-    public List<TransactionDto> getByAccountId(@PathVariable("id") int id)
+    public ResponseEntity getByAccountId(@PathVariable("id") int id)
     {
-        return transactionService.getTransactionsByAccountId(id);
+        try {
+            return ResponseEntity.ok(transactionService.getTransactionsByAccountId(id));
+        } catch (TransactionNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @GetMapping("/getbyuserid/{id}")
-    public List<TransactionDto> getByUserId(@PathVariable("id") int id)
+    public ResponseEntity getByUserId(@PathVariable("id") int id)
     {
-        return transactionService.getTransactionsByUserId(id);
+        try {
+            return ResponseEntity.ok(transactionService.getTransactionsByUserId(id));
+        } catch (TransactionNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (UserNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (AccountNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @PostMapping("/add")
-    public int add(@RequestBody List<TransactionDto> transactions)
+    public ResponseEntity add(@RequestBody List<TransactionDto> transactions)
     {
-        return transactionService.saveTransactions(transactions);
+        return ResponseEntity.ok(transactionService.saveTransactions(transactions));
     }
 
-    @PostMapping("/transfer/{fromAccountId}/{toAccountId}/{amount}")
-    public List<TransactionDto> transfer(@PathVariable("fromAccountId") int fromAccountId, @PathVariable("toAccountId") int toAccountId, @PathVariable("amount") int amount)
+    @PostMapping("/transfer")
+    public ResponseEntity transfer(@RequestBody TransferDto transferDto)
     {
-        return transactionService.transferMoney(fromAccountId, toAccountId, amount);
+        try {
+            return ResponseEntity.ok(transactionService.transferMoney(transferDto));
+        } catch (AccountNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (InsufficientFundsException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public int delete(@PathVariable("id") int id)
+    public ResponseEntity delete(@PathVariable("id") int id)
     {
-        return transactionService.deleteTransactionById(id);
+        return ResponseEntity.ok(transactionService.deleteTransactionById(id));
     }
 
 }

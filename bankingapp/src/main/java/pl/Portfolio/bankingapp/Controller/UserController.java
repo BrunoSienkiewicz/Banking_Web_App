@@ -1,13 +1,22 @@
 package pl.Portfolio.bankingapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.Portfolio.bankingapp.DTO.LoginDto;
+import pl.Portfolio.bankingapp.DTO.UserCreateDto;
 import pl.Portfolio.bankingapp.DTO.UserDto;
+import pl.Portfolio.bankingapp.Exceptions.EmailAlreadyUsedException;
+import pl.Portfolio.bankingapp.Exceptions.InvalidCredentialsException;
+import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
+import pl.Portfolio.bankingapp.Exceptions.UsernameTakenException;
 import pl.Portfolio.bankingapp.Services.UserService;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("api/v1/users")
 public class UserController {
 
@@ -15,50 +24,133 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/getall")
-    public List<UserDto> getAll()
+    public ResponseEntity getAll()
     {
-        return userService.getAllUsers();
+        List <UserDto> allUsers =  userService.getAllUsers();
+
+        return ResponseEntity.ok(allUsers);
     }
 
     @GetMapping("/get/{id}")
-    public UserDto getById(@PathVariable("id") int id)
+    public ResponseEntity getById(@PathVariable("id") int id)
     {
-        return userService.getUserById(id);
+        try {
+            return ResponseEntity.ok(userService.getUserById(id));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
-    @GetMapping("/get/{username}")
-    public UserDto getByUsername(@PathVariable("username") String username)
+    @GetMapping("/getbyusername/{username}")
+    public ResponseEntity getByUsername(@PathVariable("username") String username)
     {
-        return userService.getUserByUsername(username);
+        try {
+            return ResponseEntity.ok(userService.getUserByUsername(username));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
-    @GetMapping("/get/{email}")
-    public UserDto getByEmail(@PathVariable("email") String email)
+    @GetMapping("/getbyemail/{email}")
+    public ResponseEntity getByEmail(@PathVariable("email") String email)
     {
-        return userService.getUserByEmail(email);
+        try {
+            return ResponseEntity.ok(userService.getUserByEmail(email));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     @PostMapping("/add")
-    public int add(@RequestBody List<UserDto> users)
+    public ResponseEntity add(@RequestBody UserCreateDto user)
     {
-        return userService.saveUsers(users);
+        try {
+            return ResponseEntity.ok(userService.saveUser(user));
+        } catch (UsernameTakenException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        } catch (EmailAlreadyUsedException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
     }
 
     @PutMapping("/update/{id}")
-    public int update(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
+    public ResponseEntity update(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
     {
-        return userService.updateUser(id, updatedUser);
+        try {
+            return ResponseEntity.ok(userService.updateUser(id, updatedUser));
+        }catch (UserNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (UsernameTakenException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        } catch (EmailAlreadyUsedException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
     }
 
     @PatchMapping("/partiallyupdate/{id}")
-    public int patch(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
+    public ResponseEntity patch(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
     {
-        return userService.partialUpdateUser(id, updatedUser);
+        try {
+            return ResponseEntity.ok(userService.partialUpdateUser(id, updatedUser));
+        } catch (UserNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (UsernameTakenException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        } catch (EmailAlreadyUsedException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public int delete(@PathVariable("id") int id)
+    public ResponseEntity delete(@PathVariable("id") int id)
     {
-        return userService.deleteUser(id);
+        try {
+            return ResponseEntity.ok(userService.deleteUser(id));
+        } catch (UserNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody LoginDto user)
+    {
+        try {
+            return ResponseEntity.ok(userService.login(user));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
+        }
     }
 }

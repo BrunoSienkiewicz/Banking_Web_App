@@ -1,6 +1,7 @@
 package pl.Portfolio.bankingapp.Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,15 +24,18 @@ public class UserRepository implements UserDao {
 
     public User getById(int id)
     {
-        return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE id = ? ",
-                BeanPropertyRowMapper.newInstance(User.class), id);
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE id = ? ",
+                    BeanPropertyRowMapper.newInstance(User.class), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
-    public int save(List<User> users)
+    public int save(User user)
     {
-        users.forEach(user -> jdbcTemplate
-                .update("INSERT INTO banking_db.users(username, password, first_name, last_name, email, role) VALUES(?, ?, ?, ?, ?, ?)",
-                        user.getUsername(), user.getPassword(), user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getRole()));
+        jdbcTemplate.update("INSERT INTO banking_db.users(username, password, first_name, last_name, email, role) VALUES(?, ?, ?, ?, ?, ?)",
+                        user.getUsername(), user.getPassword(), user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getRole());
         return 1;
     }
 
@@ -47,12 +51,21 @@ public class UserRepository implements UserDao {
     }
 
     public User getByUsername(String username) {
-        return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE username = ? ",
-                BeanPropertyRowMapper.newInstance(User.class), username);
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE username = ? ",
+                    BeanPropertyRowMapper.newInstance(User.class), username);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public User getByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE email = ? ",
-                BeanPropertyRowMapper.newInstance(User.class), email);
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM banking_db.users WHERE email = ? ",
+                    BeanPropertyRowMapper.newInstance(User.class), email);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 }
