@@ -1,42 +1,122 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
-export default function register() {
-    return (
-        <div className="container">
-        <h1>Register</h1>
-        <div className="py-4">
-            <h1 className="display-4">Register for an account</h1>
-            <hr className="my-4" />
+export default function Register() {
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    role: "USER"
+  });
+
+  let navigate = useNavigate();
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setRegisterData({ ...registerData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+  event.preventDefault();
+  const response = await axios.post("http://localhost:8080/api/v1/users/register",registerData);
+  navigate('/login');
+  };
+
+  return (
+    <div className="container">
+      <h1>Register</h1>
+      <div className="py-4">
+        <h1 className="display-4">Register for an account</h1>
+        <hr className="my-4" />
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username" className="form-label">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            className="form-control"
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <form>
-        <div class="form-group">
-            <label for="inputName" class="form-label">Username</label>
-            <input type="name" id="inputName" class="form-control"></input>
+        <div className="form-group">
+          <label htmlFor="firstName" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            className="form-control"
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div class="form-group">
-            <label for="inputName" class="form-label">First Name</label>
-            <input type="name" id="inputName" class="form-control"></input>
+        <div className="form-group">
+          <label htmlFor="lastName" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            className="form-control"
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div>
-            <label for="inputName" class="form-label">Last Name</label>
-            <input type="name" id="inputName" class="form-control"></input>
+        <div className="from-group">
+          <label htmlFor="email" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="form-control"
+            aria-describedby="emailHelp"
+            onChange={handleInputChange}
+            required
+          />
+          <div id="emailHelp" className="form-text">
+            We'll never share your email with anyone else.
+          </div>
         </div>
-        <div class="from-group">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </input>
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="form-control"
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1"></input>
+        <div className="mb-3">
+          <label htmlFor="confirmPassword" className="form-label">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            className="form-control"
+            aria-describedby="passwordHelpInline"
+            onChange={handleInputChange}
+            required
+          />
         </div>
-        <div class="mb-3">
-            <label for="inputPassword6" class="form-label">Confirm Password</label>
-            <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline"></input>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        </div>
+       </form>
+    </div>
     );
-    }
+}

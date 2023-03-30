@@ -11,7 +11,7 @@ function AccountsPage() {
   }, []);
 
   const loadAccounts = async ()=> {
-    const result = await axios.get('http://localhost:8080/api/v1/accounts/getall');
+    const result = await axios.get('http://localhost:8080/api/v1/accounts/all');
     setAccounts(result.data);
     console.log(result.data);
   }

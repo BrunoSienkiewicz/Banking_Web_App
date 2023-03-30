@@ -21,7 +21,7 @@ export default function AddAccount() {
 
     const [account,setAccount] = useState({
         account_number: makeNumber(6),
-        account_type: "",
+        account_type: "SAVINGS",
         balance: 0
     });
 
@@ -37,22 +37,23 @@ export default function AddAccount() {
         navigate('/');
     }
 
-  return (
-    <div className='container'>
-        <h1>Add Account</h1>
-        <form onSubmit={(e)=> onSubmit}> 
-            <fieldset disabled>
-            <div class="form-group">
-                <label for="inputName" class="form-label">Account Number</label>
-                <input type="name" id="inputName" class="form-control" value={account_number}/>
-            </div>
-            </fieldset>
-            <div class="form-group">
-                <label for="inputName" class="form-label">Account Type</label>
-                <input type="name" id="inputName" class="form-control" value={account_type} onChange={(e)=>onInputChange}/>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-  )
+    return (
+        <div className='container'>
+            <h1>Add Account</h1>
+            <form onSubmit={(e)=>onSubmit(e)}> 
+                <div className="form-group">
+                    <label htmlFor="inputName" className="form-label">Account Number</label>
+                    <input type="name" id="inputName" className="form-control" value={account_number} disabled />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="inputName" className="form-label">Account Type</label>
+                    <select id="inputName" className="form-control" name="account_type" value={account_type} onChange={(e)=>onInputChange(e)}>
+                        <option value="SAVINGS">SAVINGS</option>
+                        <option value="CHECKING">CHECKING</option>
+                    </select>
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    );
 }

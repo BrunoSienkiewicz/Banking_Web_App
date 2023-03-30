@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity getAll()
     {
         List <UserDto> allUsers =  userService.getAllUsers();
@@ -43,7 +43,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getbyusername/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity getByUsername(@PathVariable("username") String username)
     {
         try {
@@ -55,7 +55,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getbyemail/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity getByEmail(@PathVariable("email") String email)
     {
         try {
@@ -104,7 +104,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/partiallyupdate/{id}")
+    @PatchMapping("/partially-update/{id}")
     public ResponseEntity patch(@PathVariable("id") int id, @RequestBody UserDto updatedUser)
     {
         try {
@@ -152,5 +152,17 @@ public class UserController {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(e.getMessage());
         }
+    }
+
+    @GetMapping("/token-username")
+    public ResponseEntity getUsernameFromToken(@RequestBody String token)
+    {
+        return ResponseEntity.ok(userService.getUsernameFromToken(token));
+    }
+
+    @GetMapping("/token-role")
+    public ResponseEntity getRoleFromToken(@RequestBody String token)
+    {
+        return ResponseEntity.ok(userService.getRoleFromToken(token));
     }
 }

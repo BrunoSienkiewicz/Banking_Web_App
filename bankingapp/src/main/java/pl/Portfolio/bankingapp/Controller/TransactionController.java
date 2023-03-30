@@ -22,7 +22,7 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity getAll()
     {
         return ResponseEntity.ok(transactionService.getAllTransactions());
@@ -40,7 +40,7 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/getbyaccountid/{id}")
+    @GetMapping("/account/{id}")
     public ResponseEntity getByAccountId(@PathVariable("id") int id)
     {
         try {
@@ -52,7 +52,7 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/getbyuserid/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity getByUserId(@PathVariable("id") int id)
     {
         try {

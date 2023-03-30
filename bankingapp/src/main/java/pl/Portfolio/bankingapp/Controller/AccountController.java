@@ -27,7 +27,7 @@ public class AccountController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity getAll()
     {
         return ResponseEntity.ok(accountService.getAllAccounts());
@@ -46,7 +46,7 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/getbyuserid/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity getByUserId(@PathVariable("id") int id)
     {
         try {
@@ -62,7 +62,7 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/getbyusername/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity getByUsername(@PathVariable("username") String username)
     {
         try {
@@ -97,7 +97,7 @@ public class AccountController {
         }
     }
 
-    @PatchMapping("/partiallyupdate/{id}")
+    @PatchMapping("/partially-update/{id}")
     public ResponseEntity partiallyUpdate(@PathVariable("id") int id, @RequestBody AccountDto updatedAccountDto)
     {
         try {

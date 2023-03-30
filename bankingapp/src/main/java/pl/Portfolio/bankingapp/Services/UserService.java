@@ -180,4 +180,12 @@ public class UserService {
         }
         return null;
     }
+
+    public String getUsernameFromToken(String token) {
+        return tokenService.getUsernameFromToken(token);
+    }
+
+    public String getRoleFromToken(String token) {
+        return tokenService.getRoleFromToken(token);
+    }
 }
