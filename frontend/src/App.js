@@ -6,6 +6,7 @@ import UserNavbar from './layout/UserNavbar';
 import DefaultNavbar from './layout/DefaultNavbar';
 import Home from './pages/home';
 import Login from './pages/login';
+import Profile from './pages/profile';
 import Register from './pages/register';
 import AllAccounts from './pages/allAccounts';
 import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom';
@@ -19,7 +20,7 @@ function App() {
     async function fetchUserRole() {
       const token = localStorage.getItem('token');
       if (token) {
-        const response = await axios.post('http://localhost:8080/api/v1/users/token-username', token);
+        const response = await axios.post('http://localhost:8080/api/v1/users/token-role', token);
         setUserRole(response.data);
       }
     }
@@ -27,13 +28,18 @@ function App() {
   }, []);
 
   function renderNavbar() {
-    if (userRole === 'admin') {
+    if (userRole === 'ADMIN') {
       return <AdminNavbar />;
-    } else if (userRole === 'user') {
+    } else if (userRole === 'USER') {
       return <UserNavbar />;
     } else {
       return <DefaultNavbar/>;
     }
+  }
+
+  function logout() {
+    localStorage.removeItem('token');
+    setUserRole('');
   }
 
   return (
@@ -48,6 +54,8 @@ function App() {
           {/* <Route path='/allusers' element={<AllUsers/>}/>
           <Route path='/alltransactions' element={<AllTransactions/>}/> */}
           <Route path='/accounts/add' element={<AddAccount/>}/>
+          <Route path='/logout' element={<Home/>} onEnter={logout}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </Router>
     </div>

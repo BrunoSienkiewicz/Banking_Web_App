@@ -32,15 +32,15 @@ export default function Navbar() {
                 </ul>
                 </div>
 
-                <Link to="/login">
+                <Link to="/logout">
                 <Button className="btn btn-outline-light mx-2">
-                    <a href="/login">Login</a>
+                    <a href="/logout">Logout</a>
                 </Button>
                 </Link>
 
-                <Link to="/register">
+                <Link to="/profile">
                 <Button className="btn btn-outline-light mx-2">
-                    <a href="/register">Register</a>
+                    <a href="/profile">Profile</a>
                 </Button>
                 </Link>
             </div>

@@ -154,13 +154,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/token-username")
+    @PostMapping("/token-username")
     public ResponseEntity getUsernameFromToken(@RequestBody String token)
     {
         return ResponseEntity.ok(userService.getUsernameFromToken(token));
     }
 
-    @GetMapping("/token-role")
+    @PostMapping("/token-role")
     public ResponseEntity getRoleFromToken(@RequestBody String token)
     {
         return ResponseEntity.ok(userService.getRoleFromToken(token));

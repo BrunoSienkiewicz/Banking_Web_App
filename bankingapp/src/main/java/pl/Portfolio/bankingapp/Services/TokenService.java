@@ -1,5 +1,6 @@
 package pl.Portfolio.bankingapp.Services;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import pl.Portfolio.bankingapp.Model.User;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class TokenService {
@@ -17,10 +19,10 @@ public class TokenService {
 
         Map<String, Object> claims = new HashMap<>();
 
-        if (user.getRole() == "USER") {
+        if (Objects.equals(user.getRole(), "USER")) {
             claims.put("isUser", true);
         }
-        if (user.getRole() == "ADMIN") {
+        if (Objects.equals(user.getRole(), "ADMIN")) {
             claims.put("isAdmin", true);
         }
 
@@ -46,12 +48,16 @@ public class TokenService {
     }
 
     public String getRoleFromToken(String token) {
-        String role = Jwts.parser()
+        Claims claims = Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
 
-        return role;
+        if(claims.containsKey("isAdmin"))
+            return "ADMIN";
+        else if (claims.containsKey("isUser")) {
+            return "USER";
+        }
+        return null;
     }
 }
