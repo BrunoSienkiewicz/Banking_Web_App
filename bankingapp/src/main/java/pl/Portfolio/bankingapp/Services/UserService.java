@@ -173,7 +173,7 @@ public class UserService {
         }
         if (user.getPassword().equals(password)) {
             String token = tokenService.generateToken(user);
-            return "Bearer " + token;
+            return token;
         }
         if (!user.getPassword().equals(password)) {
             throw new InvalidCredentialsException("Invalid email or password");

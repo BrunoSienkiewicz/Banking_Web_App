@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 function TransactionPage() {
-  const [accounts, setAccounts] = useState([]);
+  let navigate = useNavigate();
+
   const [selectedFromAccount, setSelectedFromAccount] = useState("");
-  const [selectedToAccount, setSelectedToAccount] = useState("");
+  const [toAccount, setToAccount] = useState("");
   const [amount, setAmount] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const history = useHistory();
 
-  const token = localStorage.getItem("jwtToken");
+  const username = localStorage.getItem("username");
 
-  // Decode the token to extract the payload
-  const decodedToken = jwt_decode(token);
-
-  // Extract the username from the decoded payload
-  const username = decodedToken.sub;
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    // Retrieve the user's accounts from the API
     axios
-      .get("/api/v1/accounts/getbyusername/" + username)
+      .get("http://localhost:8080/api/v1/accounts/username/" + username)
       .then((response) => {
         setAccounts(response.data);
       })
@@ -34,13 +27,17 @@ function TransactionPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Send the transaction data to the API
     axios
       .post("/api/transactions", {
         fromAccount: selectedFromAccount,
-        toAccount: selectedToAccount,
+        toAccount: toAccount,
         amount: amount,
-      })
+      });
+    navigate('/accounts');
+  };
+
+  const handleToAccountChange = (event) => {
+    setToAccount(event.target.value);
   };
 
   return (
@@ -58,7 +55,7 @@ function TransactionPage() {
             <option value="">Select an account</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
-                {account.accountNumber} ({account.balance})
+                {account.account_number} ({account.balance})
               </option>
             ))}
           </select>

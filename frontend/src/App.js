@@ -9,25 +9,19 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import Register from './pages/register';
 import AllAccounts from './pages/allAccounts';
+import AllUsers from './pages/allUsers';
+import AllTransactions from './pages/allTransactions';
+import MakeTransaction from './pages/makeTransaction';
+import UserTransactions from './pages/userTransactions';
+import UserAccounts from './pages/userAccounts';
 import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom';
 import AddAccount from './Account/AddAccount';
-import { useEffect, useState } from 'react';
 
 function App() {
-  const [userRole, setUserRole] = useState('');
-
-  useEffect(() => {
-    async function fetchUserRole() {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const response = await axios.post('http://localhost:8080/api/v1/users/token-role', token);
-        setUserRole(response.data);
-      }
-    }
-    fetchUserRole();
-  }, []);
+  const userRole = localStorage.getItem('role');
 
   function renderNavbar() {
+    console.log(userRole);
     if (userRole === 'ADMIN') {
       return <AdminNavbar />;
     } else if (userRole === 'USER') {
@@ -39,7 +33,8 @@ function App() {
 
   function logout() {
     localStorage.removeItem('token');
-    setUserRole('');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
   }
 
   return (
@@ -51,11 +46,14 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/allaccounts' element={<AllAccounts/>}/>
-          {/* <Route path='/allusers' element={<AllUsers/>}/>
-          <Route path='/alltransactions' element={<AllTransactions/>}/> */}
+          <Route path='/allusers' element={<AllUsers/>}/>
+          <Route path='/alltransactions' element={<AllTransactions/>}/>
           <Route path='/accounts/add' element={<AddAccount/>}/>
           <Route path='/logout' element={<Home/>} onEnter={logout}/>
           <Route path='/profile' element={<Profile/>}/>
+          <Route path = '/make-transaction' element={<MakeTransaction/>}/>
+          <Route path = '/transactions' element={<UserTransactions/>}/>
+          <Route path = '/accounts' element={<UserAccounts/>}/>
         </Routes>
       </Router>
     </div>

@@ -175,4 +175,11 @@ public class TransactionService {
         return transactionRepository.delete(id);
     }
 
+    public List<TransactionDto> getTransactionsByUsername(String username) {
+        User user = userRepository.getByUsername(username);
+        if (user == null)
+            throw new UserNotFoundException("User not found");
+
+        return getTransactionsByUserId(user.getId());
+    }
 }

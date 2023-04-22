@@ -74,6 +74,28 @@ public class TransactionController {
         }
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity getByUsername(@RequestParam("username") String username)
+    {
+        try {
+            return ResponseEntity.ok(transactionService.getTransactionsByUsername(username));
+        } catch (TransactionNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (UserNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (AccountNotFoundException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody List<TransactionDto> transactions)
     {

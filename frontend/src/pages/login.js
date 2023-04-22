@@ -22,7 +22,11 @@ export default function Login() {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/api/v1/users/login', login);
-            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('token', response.data);
+            const username = await axios.post('http://localhost:8080/api/v1/users/token-username', response.data);
+            localStorage.setItem('username', username.data);
+            const role = await axios.post('http://localhost:8080/api/v1/users/token-role', response.data);
+            localStorage.setItem('role', role.data);
             navigate('/');
         }
         catch (error) {

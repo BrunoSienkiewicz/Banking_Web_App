@@ -20,13 +20,18 @@ export default function Navbar() {
                     </Link>
                     </li>
                     <li className="nav-item">
-                    <Link to="/allaccounts">
+                    <Link to="/accounts">
                     <a className="nav-link active" aria-current="page" href="/">Accounts</a>
                     </Link>
                     </li>
                     <li className="nav-item">
-                    <Link to="/alltransactions">
+                    <Link to="/transactions">
                     <a className="nav-link active" aria-current="page" href="/">Transactions</a>
+                    </Link>
+                    </li>
+                    <li className="nav-item">
+                    <Link to="/make-transaction">
+                    <a className="nav-link active" aria-current="page" href="/">Make Transaction</a>
                     </Link>
                     </li>
                 </ul>
