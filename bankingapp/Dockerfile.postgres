@@ -1,0 +1,13 @@
+FROM postgres:latest
+
+# copy the SQL scripts to the container
+COPY sql/Create_tables.sql /docker-entrypoint-initdb.d/
+COPY sql/Generate_data.sql /docker-entrypoint-initdb.d/
+
+# set environment variables for the PostgreSQL database
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=banking_db
+
+# expose the PostgreSQL port
+EXPOSE 5432

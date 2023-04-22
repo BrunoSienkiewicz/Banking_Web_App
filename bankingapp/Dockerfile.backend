@@ -1,0 +1,4 @@
+FROM openjdk:19-oracle
+COPY target/*.jar bankingapp.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "bankingapp.jar"]
