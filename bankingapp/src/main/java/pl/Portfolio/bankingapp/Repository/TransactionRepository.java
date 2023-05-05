@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.Portfolio.bankingapp.DAO.TransactionDao;
-import pl.Portfolio.bankingapp.Model.Transaction;
+import pl.Portfolio.bankingapp.Model.Base.Transaction;
 
 import java.util.List;
 

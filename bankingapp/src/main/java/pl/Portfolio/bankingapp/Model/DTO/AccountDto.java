@@ -1,4 +1,4 @@
-package pl.Portfolio.bankingapp.DTO;
+package pl.Portfolio.bankingapp.Model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDto {
+public class AccountDto {
     private int id;
-    private String date;
-    private String type;
-    private int amount;
     private String account_number;
-
+    private String account_type;
+    private int balance;
+    private String owner_username;
 }

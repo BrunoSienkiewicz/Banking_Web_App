@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.Portfolio.bankingapp.DAO.UserDao;
-import pl.Portfolio.bankingapp.Model.User;
+import pl.Portfolio.bankingapp.Model.Base.User;
 
 import java.util.List;
 

@@ -2,19 +2,14 @@ package pl.Portfolio.bankingapp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.Portfolio.bankingapp.DTO.AccountDto;
-import pl.Portfolio.bankingapp.DTO.UserDto;
+import pl.Portfolio.bankingapp.Model.DTO.AccountDto;
+import pl.Portfolio.bankingapp.Model.DTO.UserDto;
 import pl.Portfolio.bankingapp.Exceptions.AccountNotFoundException;
 import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
-import pl.Portfolio.bankingapp.Repository.AccountRepository;
-import pl.Portfolio.bankingapp.Model.Account;
 import pl.Portfolio.bankingapp.Services.AccountService;
 import pl.Portfolio.bankingapp.Services.UserService;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")

@@ -1,6 +1,6 @@
 package pl.Portfolio.bankingapp.DAO;
 
-import pl.Portfolio.bankingapp.Model.Transaction;
+import pl.Portfolio.bankingapp.Model.Base.Transaction;
 
 import java.util.List;
 

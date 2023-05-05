@@ -1,8 +1,6 @@
 package pl.Portfolio.bankingapp.DAO;
 
-import pl.Portfolio.bankingapp.Model.User;
-
-import java.util.List;
+import pl.Portfolio.bankingapp.Model.Base.User;
 
 public interface UserDao extends Dao<User>{
     User getByUsername(String username);

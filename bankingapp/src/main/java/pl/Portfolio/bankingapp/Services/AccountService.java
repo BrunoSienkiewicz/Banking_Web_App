@@ -2,14 +2,12 @@ package pl.Portfolio.bankingapp.Services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import pl.Portfolio.bankingapp.DTO.AccountDto;
+import pl.Portfolio.bankingapp.Model.DTO.AccountDto;
 import pl.Portfolio.bankingapp.Exceptions.AccountNotFoundException;
 import pl.Portfolio.bankingapp.Exceptions.NegativeBalanceException;
 import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
-import pl.Portfolio.bankingapp.Model.Account;
-import pl.Portfolio.bankingapp.Model.User;
+import pl.Portfolio.bankingapp.Model.Base.Account;
 import pl.Portfolio.bankingapp.Repository.AccountRepository;
 import pl.Portfolio.bankingapp.Repository.UserRepository;
 

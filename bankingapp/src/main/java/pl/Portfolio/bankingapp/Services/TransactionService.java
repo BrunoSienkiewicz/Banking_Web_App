@@ -2,19 +2,18 @@ package pl.Portfolio.bankingapp.Services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import pl.Portfolio.bankingapp.DTO.TransactionDto;
-import pl.Portfolio.bankingapp.DTO.TransferDto;
+import pl.Portfolio.bankingapp.Model.DTO.TransactionDto;
+import pl.Portfolio.bankingapp.Model.DTO.TransferDto;
 import pl.Portfolio.bankingapp.Exceptions.AccountNotFoundException;
 import pl.Portfolio.bankingapp.Exceptions.TransactionNotFoundException;
 import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
-import pl.Portfolio.bankingapp.Model.User;
+import pl.Portfolio.bankingapp.Model.Base.User;
 import pl.Portfolio.bankingapp.Repository.AccountRepository;
 import pl.Portfolio.bankingapp.Repository.TransactionRepository;
 import pl.Portfolio.bankingapp.Exceptions.InsufficientFundsException;
-import pl.Portfolio.bankingapp.Model.Account;
-import pl.Portfolio.bankingapp.Model.Transaction;
+import pl.Portfolio.bankingapp.Model.Base.Account;
+import pl.Portfolio.bankingapp.Model.Base.Transaction;
 import pl.Portfolio.bankingapp.Repository.UserRepository;
 
 import java.sql.Timestamp;

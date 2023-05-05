@@ -51,9 +51,9 @@ function App() {
           <Route path='/accounts/add' element={<AddAccount/>}/>
           <Route path='/logout' element={<Home/>} onEnter={logout}/>
           <Route path='/profile' element={<Profile/>}/>
-          <Route path = '/make-transaction' element={<MakeTransaction/>}/>
-          <Route path = '/transactions' element={<UserTransactions/>}/>
-          <Route path = '/accounts' element={<UserAccounts/>}/>
+          <Route path ='/make-transaction' element={<MakeTransaction/>}/>
+          <Route path ='/transactions' element={<UserTransactions/>}/>
+          <Route path ='/accounts' element={<UserAccounts/>}/>
         </Routes>
       </Router>
     </div>

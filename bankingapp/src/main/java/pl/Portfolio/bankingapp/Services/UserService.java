@@ -2,22 +2,27 @@ package pl.Portfolio.bankingapp.Services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.Portfolio.bankingapp.DTO.LoginDto;
-import pl.Portfolio.bankingapp.DTO.UserCreateDto;
-import pl.Portfolio.bankingapp.DTO.UserDto;
+import pl.Portfolio.bankingapp.Model.DTO.LoginDto;
+import pl.Portfolio.bankingapp.Model.DTO.UserCreateDto;
+import pl.Portfolio.bankingapp.Model.DTO.UserDto;
 import pl.Portfolio.bankingapp.Exceptions.EmailAlreadyUsedException;
 import pl.Portfolio.bankingapp.Exceptions.InvalidCredentialsException;
 import pl.Portfolio.bankingapp.Exceptions.UserNotFoundException;
 import pl.Portfolio.bankingapp.Exceptions.UsernameTakenException;
-import pl.Portfolio.bankingapp.Model.User;
+import pl.Portfolio.bankingapp.Model.Base.User;
 import pl.Portfolio.bankingapp.Repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     private final TokenService tokenService;
@@ -162,6 +167,10 @@ public class UserService {
         return userRepository.delete(id);
     }
 
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     public String login(LoginDto loginDto) throws UserNotFoundException, InvalidCredentialsException {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
@@ -182,10 +191,15 @@ public class UserService {
     }
 
     public String getUsernameFromToken(String token) {
-        return tokenService.getUsernameFromToken(token);
+        return tokenService.extractUsername(token);
     }
 
     public String getRoleFromToken(String token) {
-        return tokenService.getRoleFromToken(token);
+        return tokenService.extractRole(token);
+    }
+
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getByUsername(username);
     }
 }

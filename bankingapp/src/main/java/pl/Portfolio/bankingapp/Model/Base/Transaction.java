@@ -1,4 +1,4 @@
-package pl.Portfolio.bankingapp.Model;
+package pl.Portfolio.bankingapp.Model.Base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

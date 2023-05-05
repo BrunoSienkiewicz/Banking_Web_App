@@ -1,4 +1,4 @@
-package pl.Portfolio.bankingapp.DTO;
+package pl.Portfolio.bankingapp.Model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
